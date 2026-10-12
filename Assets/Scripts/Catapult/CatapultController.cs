@@ -72,9 +72,13 @@ public class CatapultController : MonoBehaviour
 
     private void ReleaseProjectile()
     {
-        _projectile.velocity = _arm.GetPointVelocity(_projectile.position);
+        Vector3 launchVelocity = _arm.GetPointVelocity(_projectile.position);
+
+        Debug.Log($"Скорость запуска: {launchVelocity.magnitude:F2} м/с");
+
         _projectile.isKinematic = false;
         _projectile.useGravity = true;
+        _projectile.velocity = launchVelocity;
 
         _projectile = null;
     }

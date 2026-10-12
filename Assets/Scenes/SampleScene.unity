@@ -175,15 +175,15 @@ HingeJoint:
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -2.92, y: 1.5, z: 0}
   serializedVersion: 2
-  m_UseSpring: 0
+  m_UseSpring: 1
   m_Spring:
-    spring: 1000
-    damper: 5
+    spring: 250
+    damper: 15
     targetPosition: 0
   m_UseMotor: 0
   m_Motor:
     targetVelocity: -500
-    force: 1000
+    force: 3000
     freeSpin: 0
   m_UseLimits: 1
   m_ExtendedLimits: 0
@@ -1655,7 +1655,7 @@ Transform:
   m_GameObject: {fileID: 1235257273}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5, y: 1.5, z: 0}
+  m_LocalPosition: {x: 5, y: 1.5, z: 0}
   m_LocalScale: {x: 0.3, y: 2, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1981,7 +1981,7 @@ Transform:
   m_GameObject: {fileID: 2078237655}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 1.5, z: 0}
+  m_LocalPosition: {x: 3, y: 1.5, z: 0}
   m_LocalScale: {x: 0.3, y: 2, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
