@@ -1,8 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(HingeJoint))]
-
+[RequireComponent(typeof(Rigidbody), typeof(HingeJoint))]
 public class CatapultController : MonoBehaviour
 {
     [SerializeField] private KeyCode _launchKey = KeyCode.F;
@@ -11,10 +9,9 @@ public class CatapultController : MonoBehaviour
     [SerializeField] private Rigidbody _projectilePrefab;
     [SerializeField] private Transform _projectileSpawnPoint;
 
-    private HingeJoint _hinge;
     private Rigidbody _arm;
     private Rigidbody _projectile;
-    private bool _isReturning;
+    private HingeJoint _hinge;
 
     private void Awake()
     {
@@ -32,16 +29,15 @@ public class CatapultController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_launchKey) && _projectile != null && !_isReturning)
+        if (Input.GetKeyDown(_launchKey) && _projectile != null)
         {
             _hinge.useSpring = false;
             _hinge.useMotor = true;
         }
 
-        if (Input.GetKeyDown(_reloadKey) && _projectile == null && !_isReturning)
+        if (Input.GetKeyDown(_reloadKey) &&
+            _projectile == null && !_hinge.useSpring)
         {
-            _isReturning = true;
-
             _hinge.useMotor = false;
             _hinge.useSpring = true;
         }
@@ -49,7 +45,7 @@ public class CatapultController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_projectile != null && _projectile.isKinematic)
+        if (_projectile != null)
         {
             _projectile.position = _projectileSpawnPoint.position;
             _projectile.rotation = _projectileSpawnPoint.rotation;
@@ -62,10 +58,11 @@ public class CatapultController : MonoBehaviour
             _hinge.useMotor = false;
         }
 
-        if (_isReturning && Mathf.Abs(Mathf.DeltaAngle(
-                _hinge.angle, _hinge.spring.targetPosition)) < 3f)
+        if (_projectile == null && _hinge.useSpring &&
+            Mathf.Abs(Mathf.DeltaAngle(
+                _hinge.angle, _hinge.spring.targetPosition)) < 5f &&
+            _arm.angularVelocity.magnitude < 0.2f)
         {
-            _isReturning = false;
             SpawnProjectile();
         }
     }
@@ -73,8 +70,6 @@ public class CatapultController : MonoBehaviour
     private void ReleaseProjectile()
     {
         Vector3 launchVelocity = _arm.GetPointVelocity(_projectile.position);
-
-        Debug.Log($"Скорость запуска: {launchVelocity.magnitude:F2} м/с");
 
         _projectile.isKinematic = false;
         _projectile.useGravity = true;
