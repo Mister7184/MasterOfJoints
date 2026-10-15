@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 111657434}
   - component: {fileID: 111657433}
   - component: {fileID: 111657435}
+  - component: {fileID: 111657436}
   m_Layer: 0
   m_Name: CatapultArm
   m_TagString: Untagged
@@ -173,7 +174,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -2.92, y: 1.5, z: 0}
+  m_ConnectedAnchor: {x: -12.085787, y: 1.5, z: 0.30344534}
   serializedVersion: 2
   m_UseSpring: 1
   m_Spring:
@@ -239,12 +240,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5699837a373d31d49b9c197e0f4bcf54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectileSpawner: {fileID: 0}
+  _launchAngle: -55
+  _launchAngleTolerance: 5
+  _returnAngleTolerance: 5
+  _returnAngularSpeedThreshold: 0.2
+--- !u!114 &111657436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111657431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01da048fcf65aa441951bec3c3342f3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _launchKey: 102
   _reloadKey: 114
-  _launchAngle: -55
-  _projectilePrefab: {fileID: 8606167772612690205, guid: 504d5be5a96db924c981f0fae0ebd1e7,
-    type: 3}
-  _projectileSpawnPoint: {fileID: 985364921}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,6 +1375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 985364921}
+  - component: {fileID: 985364922}
   m_Layer: 0
   m_Name: ProjectileSpawn
   m_TagString: Untagged
@@ -1383,6 +1398,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 111657432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &985364922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985364920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e91eb8f83d2e0884a8f0c2ca6211470d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 8606167772612690205, guid: 504d5be5a96db924c981f0fae0ebd1e7,
+    type: 3}
+  _spawnPoint: {fileID: 985364921}
 --- !u!1 &1104044138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1849,6 +1879,7 @@ GameObject:
   - component: {fileID: 1931630475}
   - component: {fileID: 1931630474}
   - component: {fileID: 1931630473}
+  - component: {fileID: 1931630476}
   m_Layer: 0
   m_Name: SwingPivot
   m_TagString: Untagged
@@ -1885,7 +1916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c564ae2d43ceb4fa0e015450eda059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swingKey: 103
   _pushImpulse: 20
 --- !u!59 &1931630474
 HingeJoint:
@@ -1953,6 +1983,19 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1931630476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931630471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d300049e1165d334380cad1d4de554d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _swingKey: 103
 --- !u!1 &2078237655
 GameObject:
   m_ObjectHideFlags: 0
