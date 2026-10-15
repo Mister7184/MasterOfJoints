@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5699837a373d31d49b9c197e0f4bcf54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileSpawner: {fileID: 0}
+  _projectileSpawner: {fileID: 985364922}
   _launchAngle: -55
   _launchAngleTolerance: 5
   _returnAngleTolerance: 5
@@ -1377,7 +1377,7 @@ GameObject:
   - component: {fileID: 985364921}
   - component: {fileID: 985364922}
   m_Layer: 0
-  m_Name: ProjectileSpawn
+  m_Name: ProjectileSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
