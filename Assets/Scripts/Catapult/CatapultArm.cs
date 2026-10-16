@@ -1,28 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(HingeJoint), typeof(CatapultInput))]
+[RequireComponent(typeof(HingeJoint))]
 public class CatapultArm : MonoBehaviour
 {
+    [SerializeField] private InputReader _input;
     [SerializeField] private ProjectileSpawner _projectileSpawner;
-    [SerializeField] private float _launchAngle = -55f;
-    [SerializeField] private float _launchAngleTolerance = 5f;
-    [SerializeField] private float _returnAngleTolerance = 5f;
-    [SerializeField] private float _returnAngularSpeedThreshold = 0.2f;
+    [SerializeField] private float _angleTolerance = 5f;
 
-    private Rigidbody _rigidbody;
     private HingeJoint _hingeJoint;
-    private CatapultInput _input;
+    private Rigidbody _projectile;
+    private bool _isLaunching;
     private bool _isReloading;
-
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-        _hingeJoint = GetComponent<HingeJoint>();
-        _input = GetComponent<CatapultInput>();
-
-        _hingeJoint.useMotor = false;
-        _hingeJoint.useSpring = true;
-    }
 
     private void OnEnable()
     {
@@ -36,66 +24,61 @@ public class CatapultArm : MonoBehaviour
         _input.ReloadPressed -= Reload;
     }
 
-    private void Start()
+    private void Awake()
     {
-        _projectileSpawner.Spawn();
+        _hingeJoint = GetComponent<HingeJoint>();
+
+        _projectile = _projectileSpawner.Spawn();
     }
 
     private void FixedUpdate()
     {
-        if (_hingeJoint.useMotor && _projectileSpawner.HasProjectile)
-            CheckLaunchAngle();
+        if (!_isLaunching && !_isReloading)
+            return;
+
+        float targetAngle = _hingeJoint.spring.targetPosition;
+
+        float angleDifference = Mathf.Abs(
+            Mathf.DeltaAngle(_hingeJoint.angle, targetAngle));
+
+        if (angleDifference > _angleTolerance)
+            return;
+
+        if (_isLaunching)
+            _isLaunching = false;
 
         if (_isReloading)
-            CheckReloadCompletion();
+        {
+            _isReloading = false;
+            _projectile = _projectileSpawner.Spawn();
+        }
     }
 
     private void Launch()
     {
-        if (!_projectileSpawner.HasProjectile || _isReloading)
+        if (_projectile == null || _isLaunching || _isReloading)
             return;
 
-        _hingeJoint.useSpring = false;
-        _hingeJoint.useMotor = true;
+        _projectile = null;
+        _isLaunching = true;
+
+        SetTargetAngle(_hingeJoint.limits.min);
     }
 
     private void Reload()
     {
-        if (_projectileSpawner.HasProjectile || _isReloading)
+        if (_projectile != null || _isLaunching || _isReloading)
             return;
 
         _isReloading = true;
-        _hingeJoint.useMotor = false;
-        _hingeJoint.useSpring = true;
+
+        SetTargetAngle(_hingeJoint.limits.max);
     }
 
-    private void CheckLaunchAngle()
+    private void SetTargetAngle(float targetAngle)
     {
-        float angleDifference = Mathf.Abs(
-            Mathf.DeltaAngle(_hingeJoint.angle, _launchAngle));
-
-        if (angleDifference >= _launchAngleTolerance)
-            return;
-
-        Vector3 velocity = _rigidbody.GetPointVelocity(
-            _projectileSpawner.Projectile.position);
-
-        _projectileSpawner.Release(velocity);
-        _hingeJoint.useMotor = false;
-    }
-
-    private void CheckReloadCompletion()
-    {
-        float angleDifference = Mathf.Abs(
-            Mathf.DeltaAngle(
-                _hingeJoint.angle,
-                _hingeJoint.spring.targetPosition));
-
-        if (angleDifference >= _returnAngleTolerance ||
-            _rigidbody.angularVelocity.magnitude >= _returnAngularSpeedThreshold)
-            return;
-
-        _isReloading = false;
-        _projectileSpawner.Spawn();
+        JointSpring spring = _hingeJoint.spring;
+        spring.targetPosition = targetAngle;
+        _hingeJoint.spring = spring;
     }
 }

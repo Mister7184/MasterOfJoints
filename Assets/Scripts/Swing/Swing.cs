@@ -1,31 +1,28 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(HingeJoint), typeof(SwingInput))]
+[RequireComponent(typeof(HingeJoint))]
 public class Swing : MonoBehaviour
 {
     [SerializeField] private float _pushImpulse = 5f;
+    [SerializeField] private InputReader _input;
 
-    private SwingInput _input;
     private Rigidbody _rigidbody;
     private HingeJoint _hingeJoint;
+
+    private void OnEnable()
+    {
+        _input.SwingPressed += Push;
+    }
+
+    private void OnDisable()
+    {
+        _input.SwingPressed -= Push;
+    }
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _hingeJoint = GetComponent<HingeJoint>();
-        _input = GetComponent<SwingInput>();
-    }
-
-    private void OnEnable()
-    {
-        if (_input != null)
-            _input.SwingPressed += Push;
-    }
-
-    private void OnDisable()
-    {
-        if (_input != null)
-            _input.SwingPressed -= Push;
     }
 
     private void Push()

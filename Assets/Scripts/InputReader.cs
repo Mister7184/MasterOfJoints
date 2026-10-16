@@ -1,13 +1,15 @@
-using System;
+﻿using System;
 using UnityEngine;
 
-public class CatapultInput : MonoBehaviour
+public class InputReader : MonoBehaviour
 {
     [SerializeField] private KeyCode _launchKey = KeyCode.F;
     [SerializeField] private KeyCode _reloadKey = KeyCode.R;
+    [SerializeField] private KeyCode _swingKey = KeyCode.G;
 
     public event Action LaunchPressed;
     public event Action ReloadPressed;
+    public event Action SwingPressed;
 
     private void Update()
     {
@@ -16,5 +18,8 @@ public class CatapultInput : MonoBehaviour
 
         if (Input.GetKeyDown(_reloadKey))
             ReloadPressed?.Invoke();
+
+        if (Input.GetKeyDown(_swingKey))
+            SwingPressed?.Invoke();
     }
 }
